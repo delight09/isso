@@ -21,13 +21,10 @@ require(["app/lib/ready", "app/config", "app/i18n", "app/api", "app/isso", "app/
             $("head").append(style);
         }
 
-        count();
-
         if ($("#isso-thread") === null) {
             return console.log("abort, #isso-thread is missing");
         }
 
-        $("#isso-thread").append($.new('h4'));
         $("#isso-thread").append(new isso.Postbox(null));
         $("#isso-thread").append('<div id="isso-root"></div>');
 
@@ -36,7 +33,6 @@ require(["app/lib/ready", "app/config", "app/i18n", "app/api", "app/isso", "app/
             config["max-comments-nested"]).then(
             function(rv) {
                 if (rv.total_replies === 0) {
-                    $("#isso-thread > h4").textContent = i18n.translate("no-comments");
                     return;
                 }
 
@@ -49,7 +45,6 @@ require(["app/lib/ready", "app/config", "app/i18n", "app/api", "app/isso", "app/
                     }
                     count = count + comment.total_replies;
                 });
-                $("#isso-thread > h4").textContent = i18n.pluralize("num-comments", count);
 
                 if(rv.hidden_replies > 0) {
                     isso.insert_loader(rv, lastcreated);
@@ -63,5 +58,6 @@ require(["app/lib/ready", "app/config", "app/i18n", "app/api", "app/isso", "app/
                 console.log(err);
             }
         );
+	hideLoadingPrompt();
     });
 });
